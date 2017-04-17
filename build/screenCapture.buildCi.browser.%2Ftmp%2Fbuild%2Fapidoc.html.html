@@ -1,4 +1,4 @@
-<div class="apidocDiv">
+<html><head></head><body><div class="apidocDiv">
 <style>
 /*csslint
 */
@@ -47,17 +47,10 @@
 }
 </style>
 <h1>api documentation for
-    <a
-
-        href="http://cujojs.com"
-
-    >when (v3.7.8)</a>
+    <a href="http://cujojs.com">when (v3.7.8)</a>
 </h1>
 <h4>A lightweight Promises/A+ and when() implementation, plus other async goodies.</h4>
-<div class="apidocSectionDiv"><a
-    href="#apidoc.tableOfContents"
-    id="apidoc.tableOfContents"
-><h1>table of contents</h1></a><ol>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
 
     <li class="apidocModuleLi"><a href="#apidoc.module.when">module when</a><ol>
 
@@ -2839,7 +2832,7 @@
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function when(x, onFulfilled, onRejected, onProgress) {
 		var p = Promise.resolve(x);
-		if (arguments.length &#x3c; 2) {
+		if (arguments.length &lt; 2) {
 			return p;
 		}
 
@@ -2952,7 +2945,7 @@
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function visitRemaining(promises, start, handler) {
-			for(var i=start; i&#x3c;promises.length; ++i) {
+			for(var i=start; i&lt;promises.length; ++i) {
 				markAsHandled(getHandler(promises[i]), handler);
 			}
 		}</pre></li>
@@ -2986,20 +2979,20 @@
     <li>description and source-code<pre class="apidocCodePre">function any(promises) {
 			var p = Promise._defer();
 			var resolver = p._handler;
-			var l = promises.length&#x3e;&#x3e;&#x3e;0;
+			var l = promises.length&gt;&gt;&gt;0;
 
 			var pending = l;
 			var errors = [];
 
-			for (var h, x, i = 0; i &#x3c; l; ++i) {
+			for (var h, x, i = 0; i &lt; l; ++i) {
 				x = promises[i];
-				if(x === void 0 &#x26;&#x26; !(i in promises)) {
+				if(x === void 0 &amp;&amp; !(i in promises)) {
 					--pending;
 					continue;
 				}
 
 				h = Promise._handler(x);
-				if(h.state() &#x3e; 0) {
+				if(h.state() &gt; 0) {
 					resolver.become(h);
 					Promise._visitRemaining(promises, i, h);
 					break;
@@ -3009,7 +3002,7 @@
 			}
 
 			if(pending === 0) {
-				resolver.reject(new RangeError(&#x27;any(): array must not be empty&#x27;));
+				resolver.reject(new RangeError('any(): array must not be empty'));
 			}
 
 			return p;
@@ -3198,11 +3191,11 @@
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">Promise.prototype.catch = function (onRejected) {
-			if (arguments.length &#x3c; 2) {
+			if (arguments.length &lt; 2) {
 				return origCatch.call(this, onRejected);
 			}
 
-			if(typeof onRejected !== &#x27;function&#x27;) {
+			if(typeof onRejected !== 'function') {
 				return this.ensure(rejectInvalidPredicate);
 			}
 
@@ -3253,7 +3246,7 @@
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">Promise.prototype.ensure = function (handler) {
-			if(typeof handler !== &#x27;function&#x27;) {
+			if(typeof handler !== 'function') {
 				return this;
 			}
 
@@ -3363,7 +3356,7 @@
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">Promise.prototype.tap = function (onFulfilledSideEffect) {
-			return this.then(onFulfilledSideEffect)[&#x27;yield&#x27;](this);
+			return this.then(onFulfilledSideEffect)['yield'](this);
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -3381,8 +3374,8 @@
 			var parent = this._handler;
 			var state = parent.join().state();
 
-			if ((typeof onFulfilled !== &#x27;function&#x27; &#x26;&#x26; state &#x3e; 0) ||
-				(typeof onRejected !== &#x27;function&#x27; &#x26;&#x26; state &#x3c; 0)) {
+			if ((typeof onFulfilled !== 'function' &amp;&amp; state &gt; 0) ||
+				(typeof onRejected !== 'function' &amp;&amp; state &lt; 0)) {
 				// Short circuit: value will not change, simply share handler
 				return new this.constructor(Handler, parent);
 			}
@@ -3474,8 +3467,8 @@
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function race(promises) {
-			if(typeof promises !== &#x27;object&#x27; || promises === null) {
-				return reject(new TypeError(&#x27;non-iterable passed to race()&#x27;));
+			if(typeof promises !== 'object' || promises === null) {
+				return reject(new TypeError('non-iterable passed to race()'));
 			}
 
 			// Sigh, race([]) is untestable unless we return *something*
@@ -3497,7 +3490,7 @@
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function reduce(promises, f) {
-			return arguments.length &#x3e; 2 ? ar.call(promises, liftCombine(f), arguments[2])
+			return arguments.length &gt; 2 ? ar.call(promises, liftCombine(f), arguments[2])
 					: ar.call(promises, liftCombine(f));
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
@@ -3513,7 +3506,7 @@
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function reduceRight(promises, f) {
-			return arguments.length &#x3e; 2 ? arr.call(promises, liftCombine(f), arguments[2])
+			return arguments.length &gt; 2 ? arr.call(promises, liftCombine(f), arguments[2])
 					: arr.call(promises, liftCombine(f));
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
@@ -3551,15 +3544,15 @@
 			var results = [];
 			var errors = [];
 
-			var l = promises.length&#x3e;&#x3e;&#x3e;0;
+			var l = promises.length&gt;&gt;&gt;0;
 			var nFulfill = 0;
 			var nReject;
 			var x, i; // reused in both for() loops
 
 			// First pass: count actual array items
-			for(i=0; i&#x3c;l; ++i) {
+			for(i=0; i&lt;l; ++i) {
 				x = promises[i];
-				if(x === void 0 &#x26;&#x26; !(i in promises)) {
+				if(x === void 0 &amp;&amp; !(i in promises)) {
 					continue;
 				}
 				++nFulfill;
@@ -3570,17 +3563,17 @@
 			nReject = (nFulfill - n + 1);
 			nFulfill = Math.min(n, nFulfill);
 
-			if(n &#x3e; nFulfill) {
-				resolver.reject(new RangeError(&#x27;some(): array must contain at least &#x27;
-				+ n + &#x27; item(s), but had &#x27; + nFulfill));
+			if(n &gt; nFulfill) {
+				resolver.reject(new RangeError('some(): array must contain at least '
+				+ n + ' item(s), but had ' + nFulfill));
 			} else if(nFulfill === 0) {
 				resolver.resolve(results);
 			}
 
 			// Second pass: observe each array item, make progress toward goals
-			for(i=0; i&#x3c;l; ++i) {
+			for(i=0; i&lt;l; ++i) {
 				x = promises[i];
-				if(x === void 0 &#x26;&#x26; !(i in promises)) {
+				if(x === void 0 &amp;&amp; !(i in promises)) {
 					continue;
 				}
 
@@ -3634,7 +3627,7 @@
 		this.filterDuplicateFrames = true;
 
 		this._reporter = reporter;
-		if(typeof reporter.configurePromiseMonitor === &#x27;function&#x27;) {
+		if(typeof reporter.configurePromiseMonitor === 'function') {
 			reporter.configurePromiseMonitor(this);
 		}
 
@@ -3688,7 +3681,7 @@
 		Error.call(this);
 		this.message = message;
 		this.name = TimeoutError.name;
-		if (typeof Error.captureStackTrace === &#x27;function&#x27;) {
+		if (typeof Error.captureStackTrace === 'function') {
 			Error.captureStackTrace(this, TimeoutError);
 		}
 	}</pre></li>
@@ -3736,7 +3729,7 @@
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">any = function () {
-			for(var i=0, l=arguments.length, a=new Array(l); i&#x3c;l; ++i) {
+			for(var i=0, l=arguments.length, a=new Array(l); i&lt;l; ++i) {
 				a[i] = arguments[i];
 			}
 			return apply(f, this, a);
@@ -3769,7 +3762,7 @@
 	 *
 	 * @example
 	 *    function existingAjaxyFunction(url, callback, errback) {
-	 *		// Complex logic you&#x27;d rather not change
+	 *		// Complex logic you'd rather not change
 ...</pre></li>
     </ul>
 
@@ -3784,7 +3777,7 @@
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function attempt(f) {
 		<span class="apidocCodeCommentSpan">/*jshint validthis:true */
-</span>		for(var i=0, l=arguments.length-1, a=new Array(l); i&#x3c;l; ++i) {
+</span>		for(var i=0, l=arguments.length-1, a=new Array(l); i&lt;l; ++i) {
 			a[i] = arguments[i+1];
 		}
 		return apply(f, this, a);
@@ -3832,7 +3825,7 @@
 		return new Deferred();
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
- * Decorator that makes a deferred &#x22;cancelable&#x22;.  It adds a cancel() method that
+ * Decorator that makes a deferred "cancelable".  It adds a cancel() method that
  * will call a special cancel handler function and then reject the deferred.  The
  * cancel handler can be used to do resource cleanup, or anything else that should
  * be done before any other rejection handlers are executed.
@@ -3866,7 +3859,7 @@ define(function() {
 (function(define) {
 define(function(require) {
 
-	var when = require(&#x27;./when&#x27;);
+	var when = require('./when');
 
     /**
 	 * @deprecated Use when(value).<span class="apidocCodeKeywordSpan">delay</span>(ms)
@@ -3876,7 +3869,7 @@ define(function(require) {
     };
 
 });
-})(typeof define === &#x27;function&#x27; &#x26;&#x26; define.amd ? define : function (factory) { module.exports = factory(require
+})(typeof define === 'function' &amp;&amp; define.amd ? define : function (factory) { module.exports = factory(require
 ); });
 ...</pre></li>
     </ul>
@@ -3928,7 +3921,7 @@ define(function(require) {
 			var args = slice.call(arguments);
 
 			return when(condition()).withThis(this).then(function(exit) {
-				return when(f.apply(this, args))[&#x27;finally&#x27;](exit);
+				return when(f.apply(this, args))['finally'](exit);
 			});
 		};
 	}</pre></li>
@@ -3945,7 +3938,7 @@ define(function(require) {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function isPromiseLike(x) {
-		return x &#x26;&#x26; typeof x.then === &#x27;function&#x27;;
+		return x &amp;&amp; typeof x.then === 'function';
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -3989,8 +3982,8 @@ define(function(require) {
 			var parent = this._handler;
 			var state = parent.<span class="apidocCodeKeywordSpan">join</span>().state();
 
-			if ((typeof onFulfilled !== &#x27;function&#x27; &#x26;&#x26; state &#x3e; 0) ||
-				(typeof onRejected !== &#x27;function&#x27; &#x26;&#x26; state &#x3c; 0)) {
+			if ((typeof onFulfilled !== 'function' &amp;&amp; state &gt; 0) ||
+				(typeof onRejected !== 'function' &amp;&amp; state &lt; 0)) {
 				// Short circuit: value will not change, simply share handler
 				return new this.constructor(Handler, parent);
 			}
@@ -4008,7 +4001,7 @@ define(function(require) {
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function lift(f) {
 		return function() {
-			for(var i=0, l=arguments.length, a=new Array(l); i&#x3c;l; ++i) {
+			for(var i=0, l=arguments.length, a=new Array(l); i&lt;l; ++i) {
 				a[i] = arguments[i];
 			}
 			return apply(f, this, a);
@@ -4023,10 +4016,10 @@ define(function(require) {
 	 *	}
 	 *
 	 *    var promiseAjax = callbacks.<span class="apidocCodeKeywordSpan">lift</span>(traditionalAjax);
-	 *    promiseAjax(&#x22;GET&#x22;, &#x22;/movies.json&#x22;).then(console.log, console.error);
+	 *    promiseAjax("GET", "/movies.json").then(console.log, console.error);
 	 *
-	 *    var promiseAjaxGet = callbacks.lift(traditionalAjax, &#x22;GET&#x22;);
-	 *    promiseAjaxGet(&#x22;/movies.json&#x22;).then(console.log, console.error);
+	 *    var promiseAjaxGet = callbacks.lift(traditionalAjax, "GET");
+	 *    promiseAjaxGet("/movies.json").then(console.log, console.error);
 	 *
 	 * @param {Function} f traditional async function to be decorated
 	 * @param {...*} [args] arguments to be prepended for the new function @deprecated
@@ -4043,14 +4036,14 @@ define(function(require) {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function liftAll(liftOne, combine, dst, src) {
-		if(typeof combine === &#x27;undefined&#x27;) {
+		if(typeof combine === 'undefined') {
 			combine = defaultCombine;
 		}
 
 		return Object.keys(src).reduce(function(dst, key) {
 			var f = src[key];
-			return typeof f === &#x27;function&#x27; ? combine(dst, liftOne(f), key) : dst;
-		}, typeof dst === &#x27;undefined&#x27; ? defaultDst(src) : dst);
+			return typeof f === 'function' ? combine(dst, liftOne(f), key) : dst;
+		}, typeof dst === 'undefined' ? defaultDst(src) : dst);
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -4067,7 +4060,7 @@ define(function(require) {
     <li>description and source-code<pre class="apidocCodePre">function list(generator, condition, seed) {
 		var result = [];
 
-		return unfold(generator, condition, append, seed)[&#x27;yield&#x27;](result);
+		return unfold(generator, condition, append, seed)['yield'](result);
 
 		function append(value, newSeed) {
 			result.push(value);
@@ -4200,10 +4193,10 @@ define(function(require) {
 		// Transformation and flow control
 
 		/**
-		 * Transform this promise&#x27;s fulfillment value, returning a new Promise
+		 * Transform this promise's fulfillment value, returning a new Promise
 		 * for the transformed result.  If the promise cannot be fulfilled, onRejected
 		 * is called with the reason.  onProgress *may* be called with updates toward
-		 * this promise&#x27;s fulfillment.
+		 * this promise's fulfillment.
 		 * @param {function=} onFulfilled fulfillment handler
 		 * @param {function=} onRejected rejection handler
 		 * @param {function=} onProgress @deprecated progress handler
@@ -4213,8 +4206,8 @@ define(function(require) {
 			var parent = this._handler;
 			var state = parent.join().state();
 
-			if ((typeof onFulfilled !== &#x27;function&#x27; &#x26;&#x26; state &#x3e; 0) ||
-				(typeof onRejected !== &#x27;function&#x27; &#x26;&#x26; state &#x3c; 0)) {
+			if ((typeof onFulfilled !== 'function' &amp;&amp; state &gt; 0) ||
+				(typeof onRejected !== 'function' &amp;&amp; state &lt; 0)) {
 				// Short circuit: value will not change, simply share handler
 				return new this.constructor(Handler, parent);
 			}
@@ -4233,7 +4226,7 @@ define(function(require) {
 		 * @param {function?} onRejected
 		 * @return {Promise}
 		 */
-		Promise.prototype[&#x27;catch&#x27;] = function(onRejected) {
+		Promise.prototype['catch'] = function(onRejected) {
 			return this.then(void 0, onRejected);
 		};
 
@@ -4262,13 +4255,13 @@ define(function(require) {
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-The second example shows off the power that comes with when&#x27;s promise logic. Here, we get an array of numbers from a remote
+The second example shows off the power that comes with when's promise logic. Here, we get an array of numbers from a remote
  source and reduce them. The example will print `150` if all went well, and if there was a problem will print a full stack trace
 .
 
 ```js
-var when = require(&#x27;when&#x27;);
-var rest = require(&#x27;rest&#x27;);
+var when = require('when');
+var rest = require('rest');
 
 when.reduce(when.<span class="apidocCodeKeywordSpan">map</span>(getRemoteNumberList(), times10), sum)
 .done(function(result) {
@@ -4277,7 +4270,7 @@ when.reduce(when.<span class="apidocCodeKeywordSpan">map</span>(getRemoteNumberL
 
 function getRemoteNumberList() {
 // Get a remote array [1, 2, 3, 4, 5]
-return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
+return rest('http://example.com/numbers').then(JSON.parse);
 ...</pre></li>
     </ul>
 
@@ -4295,8 +4288,8 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-	var PromiseMonitor = require(&#x27;./monitor/PromiseMonitor&#x27;);
-	var ConsoleReporter = require(&#x27;./monitor/ConsoleReporter&#x27;);
+	var PromiseMonitor = require('./monitor/PromiseMonitor');
+	var ConsoleReporter = require('./monitor/ConsoleReporter');
 
 	var promiseMonitor = new PromiseMonitor(new ConsoleReporter());
 
@@ -4304,7 +4297,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		return promiseMonitor.<span class="apidocCodeKeywordSpan">monitor</span>(Promise);
 	};
 });
-}(typeof define === &#x27;function&#x27; &#x26;&#x26; define.amd ? define : function(factory) { module.exports = factory(require
+}(typeof define === 'function' &amp;&amp; define.amd ? define : function(factory) { module.exports = factory(require
 ); }));
 ...</pre></li>
     </ul>
@@ -4375,7 +4368,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 
 		verifier = verifier || function () { return false; };
 
-		if (typeof interval !== &#x27;function&#x27;) {
+		if (typeof interval !== 'function') {
 			interval = (function (interval) {
 				return function () { return when().delay(interval); };
 			})(interval);
@@ -4444,7 +4437,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 
 		return function enter() {
 			return when.<span class="apidocCodeKeywordSpan">promise</span>(function(resolve) {
-				if(count &#x3c; allowed) {
+				if(count &lt; allowed) {
 					resolve(exit);
 				} else {
 					waiting.push(resolve);
@@ -4464,7 +4457,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">race = function () {
-			for(var i=0, l=arguments.length, a=new Array(l); i&#x3c;l; ++i) {
+			for(var i=0, l=arguments.length, a=new Array(l); i&lt;l; ++i) {
 				a[i] = arguments[i];
 			}
 			return apply(f, this, a);
@@ -4482,20 +4475,20 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">reduce = function () {
-			for(var i=0, l=arguments.length, a=new Array(l); i&#x3c;l; ++i) {
+			for(var i=0, l=arguments.length, a=new Array(l); i&lt;l; ++i) {
 				a[i] = arguments[i];
 			}
 			return apply(f, this, a);
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-The second example shows off the power that comes with when&#x27;s promise logic. Here, we get an array of numbers from a remote
+The second example shows off the power that comes with when's promise logic. Here, we get an array of numbers from a remote
  source and reduce them. The example will print `150` if all went well, and if there was a problem will print a full stack trace
 .
 
 ```js
-var when = require(&#x27;when&#x27;);
-var rest = require(&#x27;rest&#x27;);
+var when = require('when');
+var rest = require('rest');
 
 when.<span class="apidocCodeKeywordSpan">reduce</span>(when.map(getRemoteNumberList(), times10), sum)
 .done(function(result) {
@@ -4504,7 +4497,7 @@ when.<span class="apidocCodeKeywordSpan">reduce</span>(when.map(getRemoteNumberL
 
 function getRemoteNumberList() {
 // Get a remote array [1, 2, 3, 4, 5]
-return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
+return rest('http://example.com/numbers').then(JSON.parse);
 ...</pre></li>
     </ul>
 
@@ -4518,7 +4511,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">reduceRight = function () {
-			for(var i=0, l=arguments.length, a=new Array(l); i&#x3c;l; ++i) {
+			for(var i=0, l=arguments.length, a=new Array(l); i&lt;l; ++i) {
 				a[i] = arguments[i];
 			}
 			return apply(f, this, a);
@@ -4595,7 +4588,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	 */
 	function when(x, onFulfilled, onRejected, onProgress) {
 		var p = Promise.<span class="apidocCodeKeywordSpan">resolve</span>(x);
-		if (arguments.length &#x3c; 2) {
+		if (arguments.length &lt; 2) {
 			return p;
 		}
 
@@ -4671,7 +4664,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">some = function () {
-			for(var i=0, l=arguments.length, a=new Array(l); i&#x3c;l; ++i) {
+			for(var i=0, l=arguments.length, a=new Array(l); i&lt;l; ++i) {
 				a[i] = arguments[i];
 			}
 			return apply(f, this, a);
@@ -4696,7 +4689,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 (function(define) {
 define(function(require) {
 
-	var when = require(&#x27;./when&#x27;);
+	var when = require('./when');
 
     /**
 	 * @deprecated Use when(trigger).<span class="apidocCodeKeywordSpan">timeout</span>(ms)
@@ -4705,7 +4698,7 @@ define(function(require) {
 		return when(trigger).timeout(msec);
     };
 });
-})(typeof define === &#x27;function&#x27; &#x26;&#x26; define.amd ? define : function (factory) { module.exports = factory(require
+})(typeof define === 'function' &amp;&amp; define.amd ? define : function (factory) { module.exports = factory(require
 ); });
 ...</pre></li>
     </ul>
@@ -4736,7 +4729,7 @@ define(function(require) {
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function attempt(f) {
 		<span class="apidocCodeCommentSpan">/*jshint validthis:true */
-</span>		for(var i=0, l=arguments.length-1, a=new Array(l); i&#x3c;l; ++i) {
+</span>		for(var i=0, l=arguments.length-1, a=new Array(l); i&lt;l; ++i) {
 			a[i] = arguments[i+1];
 		}
 		return apply(f, this, a);
@@ -4834,7 +4827,7 @@ define(function(require) {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">_log = function (traces) {
-		for(var i=0; i&#x3c;traces.length; ++i) {
+		for(var i=0; i&lt;traces.length; ++i) {
 			this.warn(error.format(traces[i]));
 		}
 	}</pre></li>
@@ -4853,7 +4846,7 @@ define(function(require) {
 	};
 
 	ConsoleReporter.prototype._log = function(traces) {
-		for(var i=0; i&#x3c;traces.length; ++i) {
+		for(var i=0; i&lt;traces.length; ++i) {
 ...</pre></li>
     </ul>
 
@@ -4880,7 +4873,7 @@ define(function(require) {
 	};
 
 	ConsoleReporter.prototype._log = function(traces) {
-		for(var i=0; i&#x3c;traces.length; ++i) {
+		for(var i=0; i&lt;traces.length; ++i) {
 			this.warn(error.format(traces[i]));
 		}
 ...</pre></li>
@@ -4944,7 +4937,7 @@ define(function(require) {
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 ```js
-var rest = require(&#x27;rest&#x27;);
+var rest = require('rest');
 
 fetchRemoteGreeting()
     .then(addExclamation)
@@ -4954,8 +4947,8 @@ fetchRemoteGreeting()
     });
 
 function fetchRemoteGreeting() {
-    // returns a when.js promise for &#x27;hello world&#x27;
-    return rest(&#x27;http://example.com/greeting&#x27;);
+    // returns a when.js promise for 'hello world'
+    return rest('http://example.com/greeting');
 }
 ...</pre></li>
     </ul>
@@ -5010,7 +5003,7 @@ function fetchRemoteGreeting() {
 	};
 
 	ConsoleReporter.prototype._log = function(traces) {
-		for(var i=0; i&#x3c;traces.length; ++i) {
+		for(var i=0; i&lt;traces.length; ++i) {
 			this.<span class="apidocCodeKeywordSpan">warn</span>(error.format(traces[i]));
 		}
 	};
@@ -5096,7 +5089,7 @@ function fetchRemoteGreeting() {
 		}
 
 		var h = Promise.<span class="apidocCodeKeywordSpan">_handler</span>(result.value);
-		if(h.state() &#x3e; 0) {
+		if(h.state() &gt; 0) {
 			return runNext(h.value, iterator);
 		}
 
@@ -5131,7 +5124,7 @@ function fetchRemoteGreeting() {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function visitRemaining(promises, start, handler) {
-			for(var i=start; i&#x3c;promises.length; ++i) {
+			for(var i=start; i&lt;promises.length; ++i) {
 				markAsHandled(getHandler(promises[i]), handler);
 			}
 		}</pre></li>
@@ -5181,20 +5174,20 @@ function fetchRemoteGreeting() {
     <li>description and source-code<pre class="apidocCodePre">function any(promises) {
 			var p = Promise._defer();
 			var resolver = p._handler;
-			var l = promises.length&#x3e;&#x3e;&#x3e;0;
+			var l = promises.length&gt;&gt;&gt;0;
 
 			var pending = l;
 			var errors = [];
 
-			for (var h, x, i = 0; i &#x3c; l; ++i) {
+			for (var h, x, i = 0; i &lt; l; ++i) {
 				x = promises[i];
-				if(x === void 0 &#x26;&#x26; !(i in promises)) {
+				if(x === void 0 &amp;&amp; !(i in promises)) {
 					--pending;
 					continue;
 				}
 
 				h = Promise._handler(x);
-				if(h.state() &#x3e; 0) {
+				if(h.state() &gt; 0) {
 					resolver.become(h);
 					Promise._visitRemaining(promises, i, h);
 					break;
@@ -5204,7 +5197,7 @@ function fetchRemoteGreeting() {
 			}
 
 			if(pending === 0) {
-				resolver.reject(new RangeError(&#x27;any(): array must not be empty&#x27;));
+				resolver.reject(new RangeError('any(): array must not be empty'));
 			}
 
 			return p;
@@ -5276,7 +5269,7 @@ function fetchRemoteGreeting() {
 		}
 
 		function runContinuation1(f, h, receiver, next) {
-			if(typeof f !== &#x27;function&#x27;) {
+			if(typeof f !== 'function') {
 				return next.become(h);
 			}
 
@@ -5286,7 +5279,7 @@ function fetchRemoteGreeting() {
 		}
 
 		function runContinuation3(f, x, h, receiver, next) {
-			if(typeof f !== &#x27;function&#x27;) {
+			if(typeof f !== 'function') {
 				return next.become(h);
 ...</pre></li>
     </ul>
@@ -5305,7 +5298,7 @@ function fetchRemoteGreeting() {
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 		function runContinuation1(f, h, receiver, next) {
-			if(typeof f !== &#x27;function&#x27;) {
+			if(typeof f !== 'function') {
 				return next.become(h);
 			}
 
@@ -5315,7 +5308,7 @@ function fetchRemoteGreeting() {
 		}
 
 		function runContinuation3(f, x, h, receiver, next) {
-			if(typeof f !== &#x27;function&#x27;) {
+			if(typeof f !== 'function') {
 				return next.become(h);
 			}
 ...</pre></li>
@@ -5386,13 +5379,13 @@ function fetchRemoteGreeting() {
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-The second example shows off the power that comes with when&#x27;s promise logic. Here, we get an array of numbers from a remote
+The second example shows off the power that comes with when's promise logic. Here, we get an array of numbers from a remote
  source and reduce them. The example will print `150` if all went well, and if there was a problem will print a full stack trace
 .
 
 ```js
-var when = require(&#x27;when&#x27;);
-var rest = require(&#x27;rest&#x27;);
+var when = require('when');
+var rest = require('rest');
 
 when.reduce(when.<span class="apidocCodeKeywordSpan">map</span>(getRemoteNumberList(), times10), sum)
 .done(function(result) {
@@ -5401,7 +5394,7 @@ when.reduce(when.<span class="apidocCodeKeywordSpan">map</span>(getRemoteNumberL
 
 function getRemoteNumberList() {
 // Get a remote array [1, 2, 3, 4, 5]
-return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
+return rest('http://example.com/numbers').then(JSON.parse);
 ...</pre></li>
     </ul>
 
@@ -5455,7 +5448,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 
 		Rejected.prototype.fail = function(context) {
 			this.reported = true;
-			emitRejection(&#x27;unhandledRejection&#x27;, this);
+			emitRejection('unhandledRejection', this);
 			Promise.<span class="apidocCodeKeywordSpan">onFatalRejection</span>(this, context === void 0 ? this.context : context);
 		};
 
@@ -5483,9 +5476,9 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		}
 
 		ReportTask.prototype.run = function() {
-			if(!this.rejection.handled &#x26;&#x26; !this.rejection.reported) {
+			if(!this.rejection.handled &amp;&amp; !this.rejection.reported) {
 				this.rejection.reported = true;
-				emitRejection(&#x27;unhandledRejection&#x27;, this.rejection) ||
+				emitRejection('unhandledRejection', this.rejection) ||
 					Promise.<span class="apidocCodeKeywordSpan">onPotentiallyUnhandledRejection</span>(this.rejection, this.context);
 			}
 		};
@@ -5515,7 +5508,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 
 		UnreportTask.prototype.run = function() {
 			if(this.rejection.reported) {
-				emitRejection(&#x27;rejectionHandled&#x27;, this.rejection) ||
+				emitRejection('rejectionHandled', this.rejection) ||
 					Promise.<span class="apidocCodeKeywordSpan">onPotentiallyUnhandledRejectionHandled</span>(this.rejection);
 			}
 		};
@@ -5537,8 +5530,8 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function race(promises) {
-			if(typeof promises !== &#x27;object&#x27; || promises === null) {
-				return reject(new TypeError(&#x27;non-iterable passed to race()&#x27;));
+			if(typeof promises !== 'object' || promises === null) {
+				return reject(new TypeError('non-iterable passed to race()'));
 			}
 
 			// Sigh, race([]) is untestable unless we return *something*
@@ -5560,18 +5553,18 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function reduce(promises, f) {
-			return arguments.length &#x3e; 2 ? ar.call(promises, liftCombine(f), arguments[2])
+			return arguments.length &gt; 2 ? ar.call(promises, liftCombine(f), arguments[2])
 					: ar.call(promises, liftCombine(f));
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-The second example shows off the power that comes with when&#x27;s promise logic. Here, we get an array of numbers from a remote
+The second example shows off the power that comes with when's promise logic. Here, we get an array of numbers from a remote
  source and reduce them. The example will print `150` if all went well, and if there was a problem will print a full stack trace
 .
 
 ```js
-var when = require(&#x27;when&#x27;);
-var rest = require(&#x27;rest&#x27;);
+var when = require('when');
+var rest = require('rest');
 
 when.<span class="apidocCodeKeywordSpan">reduce</span>(when.map(getRemoteNumberList(), times10), sum)
 .done(function(result) {
@@ -5580,7 +5573,7 @@ when.<span class="apidocCodeKeywordSpan">reduce</span>(when.map(getRemoteNumberL
 
 function getRemoteNumberList() {
 // Get a remote array [1, 2, 3, 4, 5]
-return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
+return rest('http://example.com/numbers').then(JSON.parse);
 ...</pre></li>
     </ul>
 
@@ -5594,7 +5587,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function reduceRight(promises, f) {
-			return arguments.length &#x3e; 2 ? arr.call(promises, liftCombine(f), arguments[2])
+			return arguments.length &gt; 2 ? arr.call(promises, liftCombine(f), arguments[2])
 					: arr.call(promises, liftCombine(f));
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
@@ -5669,7 +5662,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	 */
 	function when(x, onFulfilled, onRejected, onProgress) {
 		var p = Promise.<span class="apidocCodeKeywordSpan">resolve</span>(x);
-		if (arguments.length &#x3c; 2) {
+		if (arguments.length &lt; 2) {
 			return p;
 		}
 
@@ -5726,15 +5719,15 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 			var results = [];
 			var errors = [];
 
-			var l = promises.length&#x3e;&#x3e;&#x3e;0;
+			var l = promises.length&gt;&gt;&gt;0;
 			var nFulfill = 0;
 			var nReject;
 			var x, i; // reused in both for() loops
 
 			// First pass: count actual array items
-			for(i=0; i&#x3c;l; ++i) {
+			for(i=0; i&lt;l; ++i) {
 				x = promises[i];
-				if(x === void 0 &#x26;&#x26; !(i in promises)) {
+				if(x === void 0 &amp;&amp; !(i in promises)) {
 					continue;
 				}
 				++nFulfill;
@@ -5745,17 +5738,17 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 			nReject = (nFulfill - n + 1);
 			nFulfill = Math.min(n, nFulfill);
 
-			if(n &#x3e; nFulfill) {
-				resolver.reject(new RangeError(&#x27;some(): array must contain at least &#x27;
-				+ n + &#x27; item(s), but had &#x27; + nFulfill));
+			if(n &gt; nFulfill) {
+				resolver.reject(new RangeError('some(): array must contain at least '
+				+ n + ' item(s), but had ' + nFulfill));
 			} else if(nFulfill === 0) {
 				resolver.resolve(results);
 			}
 
 			// Second pass: observe each array item, make progress toward goals
-			for(i=0; i&#x3c;l; ++i) {
+			for(i=0; i&lt;l; ++i) {
 				x = promises[i];
-				if(x === void 0 &#x26;&#x26; !(i in promises)) {
+				if(x === void 0 &amp;&amp; !(i in promises)) {
 					continue;
 				}
 
@@ -5883,7 +5876,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		}
 
 		var h = Promise.<span class="apidocCodeKeywordSpan">_handler</span>(result.value);
-		if(h.state() &#x3e; 0) {
+		if(h.state() &gt; 0) {
 			return runNext(h.value, iterator);
 		}
 
@@ -5928,7 +5921,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function visitRemaining(promises, start, handler) {
-			for(var i=start; i&#x3c;promises.length; ++i) {
+			for(var i=start; i&lt;promises.length; ++i) {
 				markAsHandled(getHandler(promises[i]), handler);
 			}
 		}</pre></li>
@@ -5988,20 +5981,20 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     <li>description and source-code<pre class="apidocCodePre">function any(promises) {
 			var p = Promise._defer();
 			var resolver = p._handler;
-			var l = promises.length&#x3e;&#x3e;&#x3e;0;
+			var l = promises.length&gt;&gt;&gt;0;
 
 			var pending = l;
 			var errors = [];
 
-			for (var h, x, i = 0; i &#x3c; l; ++i) {
+			for (var h, x, i = 0; i &lt; l; ++i) {
 				x = promises[i];
-				if(x === void 0 &#x26;&#x26; !(i in promises)) {
+				if(x === void 0 &amp;&amp; !(i in promises)) {
 					--pending;
 					continue;
 				}
 
 				h = Promise._handler(x);
-				if(h.state() &#x3e; 0) {
+				if(h.state() &gt; 0) {
 					resolver.become(h);
 					Promise._visitRemaining(promises, i, h);
 					break;
@@ -6011,7 +6004,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 			}
 
 			if(pending === 0) {
-				resolver.reject(new RangeError(&#x27;any(): array must not be empty&#x27;));
+				resolver.reject(new RangeError('any(): array must not be empty'));
 			}
 
 			return p;
@@ -6093,7 +6086,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		}
 
 		function runContinuation1(f, h, receiver, next) {
-			if(typeof f !== &#x27;function&#x27;) {
+			if(typeof f !== 'function') {
 				return next.become(h);
 			}
 
@@ -6103,7 +6096,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		}
 
 		function runContinuation3(f, x, h, receiver, next) {
-			if(typeof f !== &#x27;function&#x27;) {
+			if(typeof f !== 'function') {
 				return next.become(h);
 ...</pre></li>
     </ul>
@@ -6127,7 +6120,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 		function runContinuation1(f, h, receiver, next) {
-			if(typeof f !== &#x27;function&#x27;) {
+			if(typeof f !== 'function') {
 				return next.become(h);
 			}
 
@@ -6137,7 +6130,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		}
 
 		function runContinuation3(f, x, h, receiver, next) {
-			if(typeof f !== &#x27;function&#x27;) {
+			if(typeof f !== 'function') {
 				return next.become(h);
 			}
 ...</pre></li>
@@ -6201,13 +6194,13 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-The second example shows off the power that comes with when&#x27;s promise logic. Here, we get an array of numbers from a remote
+The second example shows off the power that comes with when's promise logic. Here, we get an array of numbers from a remote
  source and reduce them. The example will print `150` if all went well, and if there was a problem will print a full stack trace
 .
 
 ```js
-var when = require(&#x27;when&#x27;);
-var rest = require(&#x27;rest&#x27;);
+var when = require('when');
+var rest = require('rest');
 
 when.reduce(when.<span class="apidocCodeKeywordSpan">map</span>(getRemoteNumberList(), times10), sum)
 .done(function(result) {
@@ -6216,7 +6209,7 @@ when.reduce(when.<span class="apidocCodeKeywordSpan">map</span>(getRemoteNumberL
 
 function getRemoteNumberList() {
 // Get a remote array [1, 2, 3, 4, 5]
-return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
+return rest('http://example.com/numbers').then(JSON.parse);
 ...</pre></li>
     </ul>
 
@@ -6280,7 +6273,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 
 		Rejected.prototype.fail = function(context) {
 			this.reported = true;
-			emitRejection(&#x27;unhandledRejection&#x27;, this);
+			emitRejection('unhandledRejection', this);
 			Promise.<span class="apidocCodeKeywordSpan">onFatalRejection</span>(this, context === void 0 ? this.context : context);
 		};
 
@@ -6313,9 +6306,9 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		}
 
 		ReportTask.prototype.run = function() {
-			if(!this.rejection.handled &#x26;&#x26; !this.rejection.reported) {
+			if(!this.rejection.handled &amp;&amp; !this.rejection.reported) {
 				this.rejection.reported = true;
-				emitRejection(&#x27;unhandledRejection&#x27;, this.rejection) ||
+				emitRejection('unhandledRejection', this.rejection) ||
 					Promise.<span class="apidocCodeKeywordSpan">onPotentiallyUnhandledRejection</span>(this.rejection, this.context);
 			}
 		};
@@ -6350,7 +6343,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 
 		UnreportTask.prototype.run = function() {
 			if(this.rejection.reported) {
-				emitRejection(&#x27;rejectionHandled&#x27;, this.rejection) ||
+				emitRejection('rejectionHandled', this.rejection) ||
 					Promise.<span class="apidocCodeKeywordSpan">onPotentiallyUnhandledRejectionHandled</span>(this.rejection);
 			}
 		};
@@ -6381,8 +6374,8 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-			if ((typeof onFulfilled !== &#x27;function&#x27; &#x26;&#x26; state &#x3e; 0) ||
-				(typeof onRejected !== &#x27;function&#x27; &#x26;&#x26; state &#x3c; 0)) {
+			if ((typeof onFulfilled !== 'function' &amp;&amp; state &gt; 0) ||
+				(typeof onRejected !== 'function' &amp;&amp; state &lt; 0)) {
 				// Short circuit: value will not change, simply share handler
 				return new this.constructor(Handler, parent);
 			}
@@ -6407,22 +6400,22 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">catch = function (onRejected) {
-			if (arguments.length &#x3c; 2) {
+			if (arguments.length &lt; 2) {
 				return origCatch.call(this, onRejected);
 			}
 
-			if(typeof onRejected !== &#x27;function&#x27;) {
+			if(typeof onRejected !== 'function') {
 				return this.ensure(rejectInvalidPredicate);
 			}
 
 			return origCatch.call(this, createCatchFilter(arguments[1], onRejected));
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-This first example will print `&#x22;hello world!!!!&#x22;` if all went well, or `&#x22;drat!&#x22;` if there was a problem. It
+This first example will print `"hello world!!!!"` if all went well, or `"drat!"` if there was a problem. It
 also uses [rest](https://github.com/cujojs/rest) to make an ajax request to a (fictional) external service.
 
 ```js
-var rest = require(&#x27;rest&#x27;);
+var rest = require('rest');
 
 fetchRemoteGreeting()
 .then(addExclamation)
@@ -6432,8 +6425,8 @@ fetchRemoteGreeting()
 });
 
 function fetchRemoteGreeting() {
-// returns a when.js promise for &#x27;hello world&#x27;
-return rest(&#x27;http://example.com/greeting&#x27;);
+// returns a when.js promise for 'hello world'
+return rest('http://example.com/greeting');
 ...</pre></li>
     </ul>
 
@@ -6456,7 +6449,7 @@ return rest(&#x27;http://example.com/greeting&#x27;);
 (function(define) {
 define(function(require) {
 
-	var when = require(&#x27;./when&#x27;);
+	var when = require('./when');
 
     /**
 	 * @deprecated Use when(value).<span class="apidocCodeKeywordSpan">delay</span>(ms)
@@ -6466,7 +6459,7 @@ define(function(require) {
     };
 
 });
-})(typeof define === &#x27;function&#x27; &#x26;&#x26; define.amd ? define : function (factory) { module.exports = factory(require
+})(typeof define === 'function' &amp;&amp; define.amd ? define : function (factory) { module.exports = factory(require
 ); });
 ...</pre></li>
     </ul>
@@ -6486,7 +6479,7 @@ define(function(require) {
     <li>example usage<pre class="apidocCodePre">...
 
 ```js
-var rest = require(&#x27;rest&#x27;);
+var rest = require('rest');
 
 fetchRemoteGreeting()
     .then(addExclamation)
@@ -6496,8 +6489,8 @@ fetchRemoteGreeting()
     });
 
 function fetchRemoteGreeting() {
-    // returns a when.js promise for &#x27;hello world&#x27;
-    return rest(&#x27;http://example.com/greeting&#x27;);
+    // returns a when.js promise for 'hello world'
+    return rest('http://example.com/greeting');
 }
 ...</pre></li>
     </ul>
@@ -6529,7 +6522,7 @@ function fetchRemoteGreeting() {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">ensure = function (handler) {
-			if(typeof handler !== &#x27;function&#x27;) {
+			if(typeof handler !== 'function') {
 				return this;
 			}
 
@@ -6552,7 +6545,7 @@ function fetchRemoteGreeting() {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">finally = function (handler) {
-			if(typeof handler !== &#x27;function&#x27;) {
+			if(typeof handler !== 'function') {
 				return this;
 			}
 
@@ -6594,7 +6587,7 @@ function fetchRemoteGreeting() {
 
 				if (s === 0) {
 					h.<span class="apidocCodeKeywordSpan">fold</span>(handler, i, void 0, resolver);
-				} else if (s &#x3e; 0) {
+				} else if (s &gt; 0) {
 					handler(i, h.value, resolver);
 				} else {
 					resolver.become(h);
@@ -6646,11 +6639,11 @@ function fetchRemoteGreeting() {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">otherwise = function (onRejected) {
-			if (arguments.length &#x3c; 2) {
+			if (arguments.length &lt; 2) {
 				return origCatch.call(this, onRejected);
 			}
 
-			if(typeof onRejected !== &#x27;function&#x27;) {
+			if(typeof onRejected !== 'function') {
 				return this.ensure(rejectInvalidPredicate);
 			}
 
@@ -6701,7 +6694,7 @@ function fetchRemoteGreeting() {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">tap = function (onFulfilledSideEffect) {
-			return this.then(onFulfilledSideEffect)[&#x27;yield&#x27;](this);
+			return this.then(onFulfilledSideEffect)['yield'](this);
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -6719,8 +6712,8 @@ function fetchRemoteGreeting() {
 			var parent = this._handler;
 			var state = parent.join().state();
 
-			if ((typeof onFulfilled !== &#x27;function&#x27; &#x26;&#x26; state &#x3e; 0) ||
-				(typeof onRejected !== &#x27;function&#x27; &#x26;&#x26; state &#x3c; 0)) {
+			if ((typeof onFulfilled !== 'function' &amp;&amp; state &gt; 0) ||
+				(typeof onRejected !== 'function' &amp;&amp; state &lt; 0)) {
 				// Short circuit: value will not change, simply share handler
 				return new this.constructor(Handler, parent);
 			}
@@ -6734,11 +6727,11 @@ function fetchRemoteGreeting() {
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-This first example will print `&#x22;hello world!!!!&#x22;` if all went well, or `&#x22;drat!&#x22;` if there was a problem. It
+This first example will print `"hello world!!!!"` if all went well, or `"drat!"` if there was a problem. It
 also uses [rest](https://github.com/cujojs/rest) to make an ajax request to a (fictional) external service.
 
 ```js
-var rest = require(&#x27;rest&#x27;);
+var rest = require('rest');
 
 fetchRemoteGreeting()
 .<span class="apidocCodeKeywordSpan">then</span>(addExclamation)
@@ -6748,7 +6741,7 @@ fetchRemoteGreeting()
 });
 
 function fetchRemoteGreeting() {
-// returns a when.js promise for &#x27;hello world&#x27;
+// returns a when.js promise for 'hello world'
 ...</pre></li>
     </ul>
 
@@ -6785,7 +6778,7 @@ function fetchRemoteGreeting() {
 (function(define) {
 define(function(require) {
 
-	var when = require(&#x27;./when&#x27;);
+	var when = require('./when');
 
     /**
 	 * @deprecated Use when(trigger).<span class="apidocCodeKeywordSpan">timeout</span>(ms)
@@ -6794,7 +6787,7 @@ define(function(require) {
 		return when(trigger).timeout(msec);
     };
 });
-})(typeof define === &#x27;function&#x27; &#x26;&#x26; define.amd ? define : function (factory) { module.exports = factory(require
+})(typeof define === 'function' &amp;&amp; define.amd ? define : function (factory) { module.exports = factory(require
 ); });
 ...</pre></li>
     </ul>
@@ -6843,7 +6836,7 @@ define(function(require) {
 			var args = slice.call(arguments);
 
 			return when(condition()).<span class="apidocCodeKeywordSpan">withThis</span>(this).then(function(exit) {
-				return when(f.apply(this, args))[&#x27;finally&#x27;](exit);
+				return when(f.apply(this, args))['finally'](exit);
 			});
 		};
 	}
@@ -6889,8 +6882,8 @@ define(function(require) {
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-			if ((typeof onFulfilled !== &#x27;function&#x27; &#x26;&#x26; state &#x3e; 0) ||
-				(typeof onRejected !== &#x27;function&#x27; &#x26;&#x26; state &#x3c; 0)) {
+			if ((typeof onFulfilled !== 'function' &amp;&amp; state &gt; 0) ||
+				(typeof onRejected !== 'function' &amp;&amp; state &lt; 0)) {
 				// Short circuit: value will not change, simply share handler
 				return new this.constructor(Handler, parent);
 			}
@@ -6920,22 +6913,22 @@ define(function(require) {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">catch = function (onRejected) {
-			if (arguments.length &#x3c; 2) {
+			if (arguments.length &lt; 2) {
 				return origCatch.call(this, onRejected);
 			}
 
-			if(typeof onRejected !== &#x27;function&#x27;) {
+			if(typeof onRejected !== 'function') {
 				return this.ensure(rejectInvalidPredicate);
 			}
 
 			return origCatch.call(this, createCatchFilter(arguments[1], onRejected));
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-This first example will print `&#x22;hello world!!!!&#x22;` if all went well, or `&#x22;drat!&#x22;` if there was a problem. It
+This first example will print `"hello world!!!!"` if all went well, or `"drat!"` if there was a problem. It
 also uses [rest](https://github.com/cujojs/rest) to make an ajax request to a (fictional) external service.
 
 ```js
-var rest = require(&#x27;rest&#x27;);
+var rest = require('rest');
 
 fetchRemoteGreeting()
 .then(addExclamation)
@@ -6945,8 +6938,8 @@ fetchRemoteGreeting()
 });
 
 function fetchRemoteGreeting() {
-// returns a when.js promise for &#x27;hello world&#x27;
-return rest(&#x27;http://example.com/greeting&#x27;);
+// returns a when.js promise for 'hello world'
+return rest('http://example.com/greeting');
 ...</pre></li>
     </ul>
 
@@ -6974,7 +6967,7 @@ return rest(&#x27;http://example.com/greeting&#x27;);
 (function(define) {
 define(function(require) {
 
-	var when = require(&#x27;./when&#x27;);
+	var when = require('./when');
 
     /**
 	 * @deprecated Use when(value).<span class="apidocCodeKeywordSpan">delay</span>(ms)
@@ -6984,7 +6977,7 @@ define(function(require) {
     };
 
 });
-})(typeof define === &#x27;function&#x27; &#x26;&#x26; define.amd ? define : function (factory) { module.exports = factory(require
+})(typeof define === 'function' &amp;&amp; define.amd ? define : function (factory) { module.exports = factory(require
 ); });
 ...</pre></li>
     </ul>
@@ -7009,7 +7002,7 @@ define(function(require) {
     <li>example usage<pre class="apidocCodePre">...
 
 ```js
-var rest = require(&#x27;rest&#x27;);
+var rest = require('rest');
 
 fetchRemoteGreeting()
     .then(addExclamation)
@@ -7019,8 +7012,8 @@ fetchRemoteGreeting()
     });
 
 function fetchRemoteGreeting() {
-    // returns a when.js promise for &#x27;hello world&#x27;
-    return rest(&#x27;http://example.com/greeting&#x27;);
+    // returns a when.js promise for 'hello world'
+    return rest('http://example.com/greeting');
 }
 ...</pre></li>
     </ul>
@@ -7040,7 +7033,7 @@ function fetchRemoteGreeting() {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">ensure = function (handler) {
-			if(typeof handler !== &#x27;function&#x27;) {
+			if(typeof handler !== 'function') {
 				return this;
 			}
 
@@ -7087,7 +7080,7 @@ function fetchRemoteGreeting() {
 
 				if (s === 0) {
 					h.<span class="apidocCodeKeywordSpan">fold</span>(handler, i, void 0, resolver);
-				} else if (s &#x3e; 0) {
+				} else if (s &gt; 0) {
 					handler(i, h.value, resolver);
 				} else {
 					resolver.become(h);
@@ -7196,7 +7189,7 @@ function fetchRemoteGreeting() {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">tap = function (onFulfilledSideEffect) {
-			return this.then(onFulfilledSideEffect)[&#x27;yield&#x27;](this);
+			return this.then(onFulfilledSideEffect)['yield'](this);
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -7219,8 +7212,8 @@ function fetchRemoteGreeting() {
 			var parent = this._handler;
 			var state = parent.join().state();
 
-			if ((typeof onFulfilled !== &#x27;function&#x27; &#x26;&#x26; state &#x3e; 0) ||
-				(typeof onRejected !== &#x27;function&#x27; &#x26;&#x26; state &#x3c; 0)) {
+			if ((typeof onFulfilled !== 'function' &amp;&amp; state &gt; 0) ||
+				(typeof onRejected !== 'function' &amp;&amp; state &lt; 0)) {
 				// Short circuit: value will not change, simply share handler
 				return new this.constructor(Handler, parent);
 			}
@@ -7234,11 +7227,11 @@ function fetchRemoteGreeting() {
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-This first example will print `&#x22;hello world!!!!&#x22;` if all went well, or `&#x22;drat!&#x22;` if there was a problem. It
+This first example will print `"hello world!!!!"` if all went well, or `"drat!"` if there was a problem. It
 also uses [rest](https://github.com/cujojs/rest) to make an ajax request to a (fictional) external service.
 
 ```js
-var rest = require(&#x27;rest&#x27;);
+var rest = require('rest');
 
 fetchRemoteGreeting()
 .<span class="apidocCodeKeywordSpan">then</span>(addExclamation)
@@ -7248,7 +7241,7 @@ fetchRemoteGreeting()
 });
 
 function fetchRemoteGreeting() {
-// returns a when.js promise for &#x27;hello world&#x27;
+// returns a when.js promise for 'hello world'
 ...</pre></li>
     </ul>
 
@@ -7290,7 +7283,7 @@ function fetchRemoteGreeting() {
 (function(define) {
 define(function(require) {
 
-	var when = require(&#x27;./when&#x27;);
+	var when = require('./when');
 
     /**
 	 * @deprecated Use when(trigger).<span class="apidocCodeKeywordSpan">timeout</span>(ms)
@@ -7299,7 +7292,7 @@ define(function(require) {
 		return when(trigger).timeout(msec);
     };
 });
-})(typeof define === &#x27;function&#x27; &#x26;&#x26; define.amd ? define : function (factory) { module.exports = factory(require
+})(typeof define === 'function' &amp;&amp; define.amd ? define : function (factory) { module.exports = factory(require
 ); });
 ...</pre></li>
     </ul>
@@ -7334,7 +7327,7 @@ define(function(require) {
 			var args = slice.call(arguments);
 
 			return when(condition()).<span class="apidocCodeKeywordSpan">withThis</span>(this).then(function(exit) {
-				return when(f.apply(this, args))[&#x27;finally&#x27;](exit);
+				return when(f.apply(this, args))['finally'](exit);
 			});
 		};
 	}
@@ -7381,8 +7374,8 @@ define(function(require) {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function race(promises) {
-			if(typeof promises !== &#x27;object&#x27; || promises === null) {
-				return reject(new TypeError(&#x27;non-iterable passed to race()&#x27;));
+			if(typeof promises !== 'object' || promises === null) {
+				return reject(new TypeError('non-iterable passed to race()'));
 			}
 
 			// Sigh, race([]) is untestable unless we return *something*
@@ -7409,18 +7402,18 @@ define(function(require) {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function reduce(promises, f) {
-			return arguments.length &#x3e; 2 ? ar.call(promises, liftCombine(f), arguments[2])
+			return arguments.length &gt; 2 ? ar.call(promises, liftCombine(f), arguments[2])
 					: ar.call(promises, liftCombine(f));
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-The second example shows off the power that comes with when&#x27;s promise logic. Here, we get an array of numbers from a remote
+The second example shows off the power that comes with when's promise logic. Here, we get an array of numbers from a remote
  source and reduce them. The example will print `150` if all went well, and if there was a problem will print a full stack trace
 .
 
 ```js
-var when = require(&#x27;when&#x27;);
-var rest = require(&#x27;rest&#x27;);
+var when = require('when');
+var rest = require('rest');
 
 when.<span class="apidocCodeKeywordSpan">reduce</span>(when.map(getRemoteNumberList(), times10), sum)
 .done(function(result) {
@@ -7429,7 +7422,7 @@ when.<span class="apidocCodeKeywordSpan">reduce</span>(when.map(getRemoteNumberL
 
 function getRemoteNumberList() {
 // Get a remote array [1, 2, 3, 4, 5]
-return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
+return rest('http://example.com/numbers').then(JSON.parse);
 ...</pre></li>
     </ul>
 
@@ -7448,7 +7441,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function reduceRight(promises, f) {
-			return arguments.length &#x3e; 2 ? arr.call(promises, liftCombine(f), arguments[2])
+			return arguments.length &gt; 2 ? arr.call(promises, liftCombine(f), arguments[2])
 					: arr.call(promises, liftCombine(f));
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
@@ -7528,15 +7521,15 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 			var results = [];
 			var errors = [];
 
-			var l = promises.length&#x3e;&#x3e;&#x3e;0;
+			var l = promises.length&gt;&gt;&gt;0;
 			var nFulfill = 0;
 			var nReject;
 			var x, i; // reused in both for() loops
 
 			// First pass: count actual array items
-			for(i=0; i&#x3c;l; ++i) {
+			for(i=0; i&lt;l; ++i) {
 				x = promises[i];
-				if(x === void 0 &#x26;&#x26; !(i in promises)) {
+				if(x === void 0 &amp;&amp; !(i in promises)) {
 					continue;
 				}
 				++nFulfill;
@@ -7547,17 +7540,17 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 			nReject = (nFulfill - n + 1);
 			nFulfill = Math.min(n, nFulfill);
 
-			if(n &#x3e; nFulfill) {
-				resolver.reject(new RangeError(&#x27;some(): array must contain at least &#x27;
-				+ n + &#x27; item(s), but had &#x27; + nFulfill));
+			if(n &gt; nFulfill) {
+				resolver.reject(new RangeError('some(): array must contain at least '
+				+ n + ' item(s), but had ' + nFulfill));
 			} else if(nFulfill === 0) {
 				resolver.resolve(results);
 			}
 
 			// Second pass: observe each array item, make progress toward goals
-			for(i=0; i&#x3c;l; ++i) {
+			for(i=0; i&lt;l; ++i) {
 				x = promises[i];
-				if(x === void 0 &#x26;&#x26; !(i in promises)) {
+				if(x === void 0 &amp;&amp; !(i in promises)) {
 					continue;
 				}
 
@@ -7616,7 +7609,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		this.filterDuplicateFrames = true;
 
 		this._reporter = reporter;
-		if(typeof reporter.configurePromiseMonitor === &#x27;function&#x27;) {
+		if(typeof reporter.configurePromiseMonitor === 'function') {
 			reporter.configurePromiseMonitor(this);
 		}
 
@@ -7654,7 +7647,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	};
 
 	PromiseMonitor.prototype._createLongTrace = function(e, context, extraContext) {
-		var trace = error.parse(e) || [String(e) + &#x27; (WARNING: non-Error used)&#x27;];
+		var trace = error.parse(e) || [String(e) + ' (WARNING: non-Error used)'];
 		trace = filterFrames(this.stackFilter, trace, 0);
 		this.<span class="apidocCodeKeywordSpan">_appendContext</span>(trace, context);
 		this._appendContext(trace, extraContext);
@@ -7677,7 +7670,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">_createLongTrace = function (e, context, extraContext) {
-		var trace = error.parse(e) || [String(e) + &#x27; (WARNING: non-Error used)&#x27;];
+		var trace = error.parse(e) || [String(e) + ' (WARNING: non-Error used)'];
 		trace = filterFrames(this.stackFilter, trace, 0);
 		this._appendContext(trace, context);
 		this._appendContext(trace, extraContext);
@@ -7692,7 +7685,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	PromiseMonitor.prototype.fatal = function(handler, extraContext) {
 		var err = new Error();
 		err.stack = this.<span class="apidocCodeKeywordSpan">_createLongTrace</span>(handler.value, handler.context, extraContext).join
-(&#x27;\n&#x27;);
+('\n');
 		setTimer(function() {
 			throw err;
 		}, 0);
@@ -7798,7 +7791,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 			if(i === 0) {
 				deduped.unshift(line);
 			} else if(line === sep) {
-				if(count &#x3e; 0) {
+				if(count &gt; 0) {
 					deduped.unshift(line);
 					count = 0;
 				}
@@ -7814,7 +7807,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	};
 
 	PromiseMonitor.prototype._createLongTrace = function(e, context, extraContext) {
-		var trace = error.parse(e) || [String(e) + &#x27; (WARNING: non-Error used)&#x27;];
+		var trace = error.parse(e) || [String(e) + ' (WARNING: non-Error used)'];
 		trace = filterFrames(this.stackFilter, trace, 0);
 		this._appendContext(trace, context);
 		this._appendContext(trace, extraContext);
@@ -7841,14 +7834,14 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     <li>description and source-code<pre class="apidocCodePre">addTrace = function (handler, extraContext) {
 		var t, i;
 
-		for(i = this._traces.length-1; i &#x3e;= 0; --i) {
+		for(i = this._traces.length-1; i &gt;= 0; --i) {
 			t = this._traces[i];
 			if(t.handler === handler) {
 				break;
 			}
 		}
 
-		if(i &#x3e;= 0) {
+		if(i &gt;= 0) {
 			t.extraContext = extraContext;
 		} else {
 			this._traces.push({
@@ -7924,7 +7917,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     <ul>
     <li>description and source-code<pre class="apidocCodePre">fatal = function (handler, extraContext) {
 		var err = new Error();
-		err.stack = this._createLongTrace(handler.value, handler.context, extraContext).join(&#x27;\n&#x27;);
+		err.stack = this._createLongTrace(handler.value, handler.context, extraContext).join('\n');
 		setTimer(function() {
 			throw err;
 		}, 0);
@@ -8053,8 +8046,8 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-	var PromiseMonitor = require(&#x27;./monitor/PromiseMonitor&#x27;);
-	var ConsoleReporter = require(&#x27;./monitor/ConsoleReporter&#x27;);
+	var PromiseMonitor = require('./monitor/PromiseMonitor');
+	var ConsoleReporter = require('./monitor/ConsoleReporter');
 
 	var promiseMonitor = new PromiseMonitor(new ConsoleReporter());
 
@@ -8062,7 +8055,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		return promiseMonitor.<span class="apidocCodeKeywordSpan">monitor</span>(Promise);
 	};
 });
-}(typeof define === &#x27;function&#x27; &#x26;&#x26; define.amd ? define : function(factory) { module.exports = factory(require
+}(typeof define === 'function' &amp;&amp; define.amd ? define : function(factory) { module.exports = factory(require
 ); }));
 ...</pre></li>
     </ul>
@@ -8145,7 +8138,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     <ul>
     <li>description and source-code<pre class="apidocCodePre">_drain = function () {
 		var i = 0;
-		for (; i &#x3c; this._queueLen; ++i) {
+		for (; i &lt; this._queueLen; ++i) {
 			this._queue[i].run();
 			this._queue[i] = void 0;
 		}
@@ -8153,7 +8146,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		this._queueLen = 0;
 		this._running = false;
 
-		for (i = 0; i &#x3c; this._afterQueueLen; ++i) {
+		for (i = 0; i &lt; this._afterQueueLen; ++i) {
 			this._afterQueue[i].run();
 			this._afterQueue[i] = void 0;
 		}
@@ -8193,7 +8186,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		this.run();
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
-			if(typeof cont.rejected === &#x27;function&#x27;) {
+			if(typeof cont.rejected === 'function') {
 				this._unreport();
 			}
 			runContinuation1(cont.rejected, this, cont.receiver, cont.resolver);
@@ -8294,7 +8287,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		Error.call(this);
 		this.message = message;
 		this.name = TimeoutError.name;
-		if (typeof Error.captureStackTrace === &#x27;function&#x27;) {
+		if (typeof Error.captureStackTrace === 'function') {
 			Error.captureStackTrace(this, TimeoutError);
 		}
 	}</pre></li>
@@ -8319,7 +8312,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		Error.call(this);
 		this.message = message;
 		this.name = TimeoutError.name;
-		if (typeof Error.captureStackTrace === &#x27;function&#x27;) {
+		if (typeof Error.captureStackTrace === 'function') {
 			Error.captureStackTrace(this, TimeoutError);
 		}
 	}</pre></li>
@@ -8328,8 +8321,8 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 			var parent = this._handler;
 			var state = parent.join().state();
 
-			if ((typeof onFulfilled !== &#x27;function&#x27; &#x26;&#x26; state &#x3e; 0) ||
-				(typeof onRejected !== &#x27;function&#x27; &#x26;&#x26; state &#x3c; 0)) {
+			if ((typeof onFulfilled !== 'function' &amp;&amp; state &gt; 0) ||
+				(typeof onRejected !== 'function' &amp;&amp; state &lt; 0)) {
 				// Short circuit: value will not change, simply share handler
 				return new this.<span class="apidocCodeKeywordSpan">constructor</span>(Handler, parent);
 			}
@@ -8392,7 +8385,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">any = function () {
-			for(var i=0, l=arguments.length, a=new Array(l); i&#x3c;l; ++i) {
+			for(var i=0, l=arguments.length, a=new Array(l); i&lt;l; ++i) {
 				a[i] = arguments[i];
 			}
 			return apply(f, this, a);
@@ -8430,7 +8423,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	 *
 	 * @example
 	 *    function existingAjaxyFunction(url, callback, errback) {
-	 *		// Complex logic you&#x27;d rather not change
+	 *		// Complex logic you'd rather not change
 ...</pre></li>
     </ul>
 
@@ -8485,7 +8478,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	 *
 	 * @example
 	 *    function existingAjaxyFunction(url, callback, errback) {
-	 *		// Complex logic you&#x27;d rather not change
+	 *		// Complex logic you'd rather not change
 ...</pre></li>
     </ul>
 
@@ -8511,7 +8504,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	 *
 	 *    var sumPromise = callbacks.<span class="apidocCodeKeywordSpan">call</span>(sumInFiveSeconds, 5, 10);
 	 *
-	 *    // Logs &#x27;15&#x27; 5 seconds later
+	 *    // Logs '15' 5 seconds later
 	 *    sumPromise.then(console.log);
 	 *
 	 * @param {function} asyncFunction function to be called
@@ -8530,7 +8523,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function lift(f) {
-		var args = arguments.length &#x3e; 1 ? slice.call(arguments, 1) : [];
+		var args = arguments.length &gt; 1 ? slice.call(arguments, 1) : [];
 		return function() {
 			return _apply(f, this, args.concat(slice.call(arguments)));
 		};
@@ -8544,10 +8537,10 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	 *	}
 	 *
 	 *    var promiseAjax = callbacks.<span class="apidocCodeKeywordSpan">lift</span>(traditionalAjax);
-	 *    promiseAjax(&#x22;GET&#x22;, &#x22;/movies.json&#x22;).then(console.log, console.error);
+	 *    promiseAjax("GET", "/movies.json").then(console.log, console.error);
 	 *
-	 *    var promiseAjaxGet = callbacks.lift(traditionalAjax, &#x22;GET&#x22;);
-	 *    promiseAjaxGet(&#x22;/movies.json&#x22;).then(console.log, console.error);
+	 *    var promiseAjaxGet = callbacks.lift(traditionalAjax, "GET");
+	 *    promiseAjaxGet("/movies.json").then(console.log, console.error);
 	 *
 	 * @param {Function} f traditional async function to be decorated
 	 * @param {...*} [args] arguments to be prepended for the new function @deprecated
@@ -8587,15 +8580,15 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 
 				var callbackPos, errbackPos;
 
-				if(typeof positions.callback === &#x27;number&#x27;) {
+				if(typeof positions.callback === 'number') {
 					callbackPos = normalizePosition(args, positions.callback);
 				}
 
-				if(typeof positions.errback === &#x27;number&#x27;) {
+				if(typeof positions.errback === 'number') {
 					errbackPos = normalizePosition(args, positions.errback);
 				}
 
-				if(errbackPos &#x3c; callbackPos) {
+				if(errbackPos &lt; callbackPos) {
 					insertCallback(args, errbackPos, p._handler.reject, p._handler);
 					insertCallback(args, callbackPos, p._handler.resolve, p._handler);
 				} else {
@@ -8612,7 +8605,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     <li>example usage<pre class="apidocCodePre">...
 	 * of the arguments array.
 	 *
-	 * If arguments are given on the call to the &#x27;promisified&#x27; function, they are
+	 * If arguments are given on the call to the 'promisified' function, they are
 	 * intermingled with the callback and errback. If a promise is given among them,
 	 * the execution of the function will only occur after its resolution.
 	 *
@@ -8622,7 +8615,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	 *	});
 	 *
 	 *    delay(100).then(function() {
-	 *		console.log(&#x22;This happens 100ms afterwards&#x22;);
+	 *		console.log("This happens 100ms afterwards");
 	 *	});
 	 *
 ...</pre></li>
@@ -8712,7 +8705,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		return new Deferred();
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
- * Decorator that makes a deferred &#x22;cancelable&#x22;.  It adds a cancel() method that
+ * Decorator that makes a deferred "cancelable".  It adds a cancel() method that
  * will call a special cancel handler function and then reject the deferred.  The
  * cancel handler can be used to do resource cleanup, or anything else that should
  * be done before any other rejection handlers are executed.
@@ -8751,7 +8744,7 @@ define(function() {
 (function(define) {
 define(function(require) {
 
-	var when = require(&#x27;./when&#x27;);
+	var when = require('./when');
 
     /**
 	 * @deprecated Use when(value).<span class="apidocCodeKeywordSpan">delay</span>(ms)
@@ -8761,7 +8754,7 @@ define(function(require) {
     };
 
 });
-})(typeof define === &#x27;function&#x27; &#x26;&#x26; define.amd ? define : function (factory) { module.exports = factory(require
+})(typeof define === 'function' &amp;&amp; define.amd ? define : function (factory) { module.exports = factory(require
 ); });
 ...</pre></li>
     </ul>
@@ -8814,7 +8807,7 @@ define(function(require) {
 
 	} else if (!capturedSetTimeout) { // vert.x
 		var vertxRequire = require;
-		var vertx = vertxRequire(&#x27;vertx&#x27;);
+		var vertx = vertxRequire('vertx');
 		setTimer = function (f, ms) { return vertx.<span class="apidocCodeKeywordSpan">setTimer</span>(ms, f); };
 		clearTimer = vertx.cancelTimer;
 		asap = vertx.runOnLoop || vertx.runOnContext;
@@ -8856,7 +8849,7 @@ define(function(require) {
 	PromiseMonitor.prototype.addTrace = function(handler, extraContext) {
 		var t, i;
 
-		for(i = this._traces.length-1; i &#x3e;= 0; --i) {
+		for(i = this._traces.length-1; i &gt;= 0; --i) {
 ...</pre></li>
     </ul>
 
@@ -8879,7 +8872,7 @@ define(function(require) {
 	};
 
 	ConsoleReporter.prototype._log = function(traces) {
-		for(var i=0; i&#x3c;traces.length; ++i) {
+		for(var i=0; i&lt;traces.length; ++i) {
 			this.warn(error.<span class="apidocCodeKeywordSpan">format</span>(traces[i]));
 		}
 	};
@@ -8900,7 +8893,7 @@ define(function(require) {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">parse = function (e) {
-			return e &#x26;&#x26; e.stack &#x26;&#x26; e.stack.split(&#x27;\n&#x27;);
+			return e &amp;&amp; e.stack &amp;&amp; e.stack.split('\n');
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 	PromiseMonitor.prototype.formatTraces = function(traces) {
@@ -8910,7 +8903,7 @@ define(function(require) {
 	};
 
 	PromiseMonitor.prototype._createLongTrace = function(e, context, extraContext) {
-		var trace = error.<span class="apidocCodeKeywordSpan">parse</span>(e) || [String(e) + &#x27; (WARNING: non-Error used)&#x27;];
+		var trace = error.<span class="apidocCodeKeywordSpan">parse</span>(e) || [String(e) + ' (WARNING: non-Error used)'];
 		trace = filterFrames(this.stackFilter, trace, 0);
 		this._appendContext(trace, context);
 		this._appendContext(trace, extraContext);
@@ -8974,8 +8967,8 @@ define(function(require) {
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function formatError(e) {
-		var s = typeof e === &#x27;object&#x27; &#x26;&#x26; e !== null &#x26;&#x26; (e.stack || e.message) ? e.stack || e.message : formatObject(e);
-		return e instanceof Error ? s : s + &#x27; (WARNING: non-Error used)&#x27;;
+		var s = typeof e === 'object' &amp;&amp; e !== null &amp;&amp; (e.stack || e.message) ? e.stack || e.message : formatObject(e);
+		return e instanceof Error ? s : s + ' (WARNING: non-Error used)';
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 		var tasks = [];
@@ -8985,14 +8978,14 @@ define(function(require) {
 		function report(r) {
 			if(!r.handled) {
 				reported.push(r);
-				logError(&#x27;Potentially unhandled rejection [&#x27; + r.id + &#x27;] &#x27; + format.<span class="apidocCodeKeywordSpan">
+				logError('Potentially unhandled rejection [' + r.id + '] ' + format.<span class="apidocCodeKeywordSpan">
 formatError</span>(r.value));
 			}
 		}
 
 		function unreport(r) {
 			var i = reported.indexOf(r);
-			if(i &#x3e;= 0) {
+			if(i &gt;= 0) {
 				reported.splice(i, 1);
 ...</pre></li>
     </ul>
@@ -9008,7 +9001,7 @@ formatError</span>(r.value));
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function formatObject(o) {
 		var s = String(o);
-		if(s === &#x27;[object Object]&#x27; &#x26;&#x26; typeof JSON !== &#x27;undefined&#x27;) {
+		if(s === '[object Object]' &amp;&amp; typeof JSON !== 'undefined') {
 			s = tryStringify(o, s);
 		}
 		return s;
@@ -9019,9 +9012,9 @@ formatError</span>(r.value));
 
 		function unreport(r) {
 			var i = reported.indexOf(r);
-			if(i &#x3e;= 0) {
+			if(i &gt;= 0) {
 				reported.splice(i, 1);
-				logInfo(&#x27;Handled previous rejection [&#x27; + r.id + &#x27;] &#x27; + format.<span class="apidocCodeKeywordSpan">formatObject
+				logInfo('Handled previous rejection [' + r.id + '] ' + format.<span class="apidocCodeKeywordSpan">formatObject
 </span>(r.value));
 			}
 		}
@@ -9085,7 +9078,7 @@ formatError</span>(r.value));
 	 *
 	 * @example
 	 *    function existingAjaxyFunction(url, callback, errback) {
-	 *		// Complex logic you&#x27;d rather not change
+	 *		// Complex logic you'd rather not change
 ...</pre></li>
     </ul>
 
@@ -9100,7 +9093,7 @@ formatError</span>(r.value));
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function attempt(f) {
 		<span class="apidocCodeCommentSpan">/*jshint validthis:true */
-</span>		for(var i=0, l=arguments.length-1, a=new Array(l); i&#x3c;l; ++i) {
+</span>		for(var i=0, l=arguments.length-1, a=new Array(l); i&lt;l; ++i) {
 			a[i] = arguments[i+1];
 		}
 		return apply(f, this, a);
@@ -9115,7 +9108,7 @@ formatError</span>(r.value));
 	 *
 	 *    var sumPromise = callbacks.<span class="apidocCodeKeywordSpan">call</span>(sumInFiveSeconds, 5, 10);
 	 *
-	 *    // Logs &#x27;15&#x27; 5 seconds later
+	 *    // Logs '15' 5 seconds later
 	 *    sumPromise.then(console.log);
 	 *
 	 * @param {function} asyncFunction function to be called
@@ -9159,7 +9152,7 @@ formatError</span>(r.value));
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function lift(f) {
-		var args = arguments.length &#x3e; 1 ? slice.call(arguments, 1) : [];
+		var args = arguments.length &gt; 1 ? slice.call(arguments, 1) : [];
 		return function() {
 			return _apply(f, this, args.concat(slice.call(arguments)));
 		};
@@ -9173,10 +9166,10 @@ formatError</span>(r.value));
 	 *	}
 	 *
 	 *    var promiseAjax = callbacks.<span class="apidocCodeKeywordSpan">lift</span>(traditionalAjax);
-	 *    promiseAjax(&#x22;GET&#x22;, &#x22;/movies.json&#x22;).then(console.log, console.error);
+	 *    promiseAjax("GET", "/movies.json").then(console.log, console.error);
 	 *
-	 *    var promiseAjaxGet = callbacks.lift(traditionalAjax, &#x22;GET&#x22;);
-	 *    promiseAjaxGet(&#x22;/movies.json&#x22;).then(console.log, console.error);
+	 *    var promiseAjaxGet = callbacks.lift(traditionalAjax, "GET");
+	 *    promiseAjaxGet("/movies.json").then(console.log, console.error);
 	 *
 	 * @param {Function} f traditional async function to be decorated
 	 * @param {...*} [args] arguments to be prepended for the new function @deprecated
@@ -9231,7 +9224,7 @@ formatError</span>(r.value));
 	 *
 	 * @example
 	 *    function existingAjaxyFunction(url, callback, errback) {
-	 *		// Complex logic you&#x27;d rather not change
+	 *		// Complex logic you'd rather not change
 ...</pre></li>
     </ul>
 
@@ -9258,7 +9251,7 @@ formatError</span>(r.value));
 	 *
 	 *    var sumPromise = callbacks.<span class="apidocCodeKeywordSpan">call</span>(sumInFiveSeconds, 5, 10);
 	 *
-	 *    // Logs &#x27;15&#x27; 5 seconds later
+	 *    // Logs '15' 5 seconds later
 	 *    sumPromise.then(console.log);
 	 *
 	 * @param {function} asyncFunction function to be called
@@ -9290,10 +9283,10 @@ formatError</span>(r.value));
 	 *	}
 	 *
 	 *    var promiseAjax = callbacks.<span class="apidocCodeKeywordSpan">lift</span>(traditionalAjax);
-	 *    promiseAjax(&#x22;GET&#x22;, &#x22;/movies.json&#x22;).then(console.log, console.error);
+	 *    promiseAjax("GET", "/movies.json").then(console.log, console.error);
 	 *
-	 *    var promiseAjaxGet = callbacks.lift(traditionalAjax, &#x22;GET&#x22;);
-	 *    promiseAjaxGet(&#x22;/movies.json&#x22;).then(console.log, console.error);
+	 *    var promiseAjaxGet = callbacks.lift(traditionalAjax, "GET");
+	 *    promiseAjaxGet("/movies.json").then(console.log, console.error);
 	 *
 	 * @param {Function} f traditional async function to be decorated
 	 * @param {...*} [args] arguments to be prepended for the new function @deprecated
@@ -9319,7 +9312,7 @@ formatError</span>(r.value));
 			var args = slice.call(arguments);
 
 			return when(condition()).withThis(this).then(function(exit) {
-				return when(f.apply(this, args))[&#x27;finally&#x27;](exit);
+				return when(f.apply(this, args))['finally'](exit);
 			});
 		};
 	}</pre></li>
@@ -9341,7 +9334,7 @@ formatError</span>(r.value));
 
 		return function enter() {
 			return when.promise(function(resolve) {
-				if(count &#x3c; allowed) {
+				if(count &lt; allowed) {
 					resolve(exit);
 				} else {
 					waiting.push(resolve);
@@ -9352,7 +9345,7 @@ formatError</span>(r.value));
 
 		function exit() {
 			count = Math.max(count - 1, 0);
-			if(waiting.length &#x3e; 0) {
+			if(waiting.length &gt; 0) {
 				waiting.shift()(exit);
 			}
 		}
@@ -9375,7 +9368,7 @@ formatError</span>(r.value));
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function isPromiseLike(x) {
-		return x &#x26;&#x26; typeof x.then === &#x27;function&#x27;;
+		return x &amp;&amp; typeof x.then === 'function';
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -9429,8 +9422,8 @@ formatError</span>(r.value));
 			var parent = this._handler;
 			var state = parent.<span class="apidocCodeKeywordSpan">join</span>().state();
 
-			if ((typeof onFulfilled !== &#x27;function&#x27; &#x26;&#x26; state &#x3e; 0) ||
-				(typeof onRejected !== &#x27;function&#x27; &#x26;&#x26; state &#x3c; 0)) {
+			if ((typeof onFulfilled !== 'function' &amp;&amp; state &gt; 0) ||
+				(typeof onRejected !== 'function' &amp;&amp; state &lt; 0)) {
 				// Short circuit: value will not change, simply share handler
 				return new this.constructor(Handler, parent);
 			}
@@ -9452,7 +9445,7 @@ formatError</span>(r.value));
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">all = function () {
-			for(var i=0, l=arguments.length, a=new Array(l); i&#x3c;l; ++i) {
+			for(var i=0, l=arguments.length, a=new Array(l); i&lt;l; ++i) {
 				a[i] = arguments[i];
 			}
 			return apply(f, this, a);
@@ -9499,13 +9492,13 @@ formatError</span>(r.value));
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-The second example shows off the power that comes with when&#x27;s promise logic. Here, we get an array of numbers from a remote
+The second example shows off the power that comes with when's promise logic. Here, we get an array of numbers from a remote
  source and reduce them. The example will print `150` if all went well, and if there was a problem will print a full stack trace
 .
 
 ```js
-var when = require(&#x27;when&#x27;);
-var rest = require(&#x27;rest&#x27;);
+var when = require('when');
+var rest = require('rest');
 
 when.reduce(when.<span class="apidocCodeKeywordSpan">map</span>(getRemoteNumberList(), times10), sum)
 .done(function(result) {
@@ -9514,7 +9507,7 @@ when.reduce(when.<span class="apidocCodeKeywordSpan">map</span>(getRemoteNumberL
 
 function getRemoteNumberList() {
 // Get a remote array [1, 2, 3, 4, 5]
-return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
+return rest('http://example.com/numbers').then(JSON.parse);
 ...</pre></li>
     </ul>
 
@@ -9580,7 +9573,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function lift(f) {
 		return function() {
-			for(var i=0, l=arguments.length, a=new Array(l); i&#x3c;l; ++i) {
+			for(var i=0, l=arguments.length, a=new Array(l); i&lt;l; ++i) {
 				a[i] = arguments[i];
 			}
 			return apply(f, this, a);
@@ -9595,10 +9588,10 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	 *	}
 	 *
 	 *    var promiseAjax = callbacks.<span class="apidocCodeKeywordSpan">lift</span>(traditionalAjax);
-	 *    promiseAjax(&#x22;GET&#x22;, &#x22;/movies.json&#x22;).then(console.log, console.error);
+	 *    promiseAjax("GET", "/movies.json").then(console.log, console.error);
 	 *
-	 *    var promiseAjaxGet = callbacks.lift(traditionalAjax, &#x22;GET&#x22;);
-	 *    promiseAjaxGet(&#x22;/movies.json&#x22;).then(console.log, console.error);
+	 *    var promiseAjaxGet = callbacks.lift(traditionalAjax, "GET");
+	 *    promiseAjaxGet("/movies.json").then(console.log, console.error);
 	 *
 	 * @param {Function} f traditional async function to be decorated
 	 * @param {...*} [args] arguments to be prepended for the new function @deprecated
@@ -9620,14 +9613,14 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function liftAll(liftOne, combine, dst, src) {
-		if(typeof combine === &#x27;undefined&#x27;) {
+		if(typeof combine === 'undefined') {
 			combine = defaultCombine;
 		}
 
 		return Object.keys(src).reduce(function(dst, key) {
 			var f = src[key];
-			return typeof f === &#x27;function&#x27; ? combine(dst, liftOne(f), key) : dst;
-		}, typeof dst === &#x27;undefined&#x27; ? defaultDst(src) : dst);
+			return typeof f === 'function' ? combine(dst, liftOne(f), key) : dst;
+		}, typeof dst === 'undefined' ? defaultDst(src) : dst);
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -9649,7 +9642,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     <li>description and source-code<pre class="apidocCodePre">function list(generator, condition, seed) {
 		var result = [];
 
-		return unfold(generator, condition, append, seed)[&#x27;yield&#x27;](result);
+		return unfold(generator, condition, append, seed)['yield'](result);
 
 		function append(value, newSeed) {
 			result.push(value);
@@ -9787,10 +9780,10 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		// Transformation and flow control
 
 		/**
-		 * Transform this promise&#x27;s fulfillment value, returning a new Promise
+		 * Transform this promise's fulfillment value, returning a new Promise
 		 * for the transformed result.  If the promise cannot be fulfilled, onRejected
 		 * is called with the reason.  onProgress *may* be called with updates toward
-		 * this promise&#x27;s fulfillment.
+		 * this promise's fulfillment.
 		 * @param {function=} onFulfilled fulfillment handler
 		 * @param {function=} onRejected rejection handler
 		 * @param {function=} onProgress @deprecated progress handler
@@ -9800,8 +9793,8 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 			var parent = this._handler;
 			var state = parent.join().state();
 
-			if ((typeof onFulfilled !== &#x27;function&#x27; &#x26;&#x26; state &#x3e; 0) ||
-				(typeof onRejected !== &#x27;function&#x27; &#x26;&#x26; state &#x3c; 0)) {
+			if ((typeof onFulfilled !== 'function' &amp;&amp; state &gt; 0) ||
+				(typeof onRejected !== 'function' &amp;&amp; state &lt; 0)) {
 				// Short circuit: value will not change, simply share handler
 				return new this.constructor(Handler, parent);
 			}
@@ -9820,7 +9813,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		 * @param {function?} onRejected
 		 * @return {Promise}
 		 */
-		Promise.prototype[&#x27;catch&#x27;] = function(onRejected) {
+		Promise.prototype['catch'] = function(onRejected) {
 			return this.then(void 0, onRejected);
 		};
 
@@ -9854,13 +9847,13 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-The second example shows off the power that comes with when&#x27;s promise logic. Here, we get an array of numbers from a remote
+The second example shows off the power that comes with when's promise logic. Here, we get an array of numbers from a remote
  source and reduce them. The example will print `150` if all went well, and if there was a problem will print a full stack trace
 .
 
 ```js
-var when = require(&#x27;when&#x27;);
-var rest = require(&#x27;rest&#x27;);
+var when = require('when');
+var rest = require('rest');
 
 when.reduce(when.<span class="apidocCodeKeywordSpan">map</span>(getRemoteNumberList(), times10), sum)
 .done(function(result) {
@@ -9869,7 +9862,7 @@ when.reduce(when.<span class="apidocCodeKeywordSpan">map</span>(getRemoteNumberL
 
 function getRemoteNumberList() {
 // Get a remote array [1, 2, 3, 4, 5]
-return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
+return rest('http://example.com/numbers').then(JSON.parse);
 ...</pre></li>
     </ul>
 
@@ -9892,8 +9885,8 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-	var PromiseMonitor = require(&#x27;./monitor/PromiseMonitor&#x27;);
-	var ConsoleReporter = require(&#x27;./monitor/ConsoleReporter&#x27;);
+	var PromiseMonitor = require('./monitor/PromiseMonitor');
+	var ConsoleReporter = require('./monitor/ConsoleReporter');
 
 	var promiseMonitor = new PromiseMonitor(new ConsoleReporter());
 
@@ -9901,7 +9894,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		return promiseMonitor.<span class="apidocCodeKeywordSpan">monitor</span>(Promise);
 	};
 });
-}(typeof define === &#x27;function&#x27; &#x26;&#x26; define.amd ? define : function(factory) { module.exports = factory(require
+}(typeof define === 'function' &amp;&amp; define.amd ? define : function(factory) { module.exports = factory(require
 ); }));
 ...</pre></li>
     </ul>
@@ -9938,7 +9931,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	 *
 	 * @example
 	 *    function existingAjaxyFunction(url, callback, errback) {
-	 *		// Complex logic you&#x27;d rather not change
+	 *		// Complex logic you'd rather not change
 ...</pre></li>
     </ul>
 
@@ -9995,7 +9988,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	 *
 	 *    var sumPromise = callbacks.<span class="apidocCodeKeywordSpan">call</span>(sumInFiveSeconds, 5, 10);
 	 *
-	 *    // Logs &#x27;15&#x27; 5 seconds later
+	 *    // Logs '15' 5 seconds later
 	 *    sumPromise.then(console.log);
 	 *
 	 * @param {function} asyncFunction function to be called
@@ -10017,7 +10010,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 		return function(err, value) {
 			if(err) {
 				resolver.reject(err);
-			} else if(arguments.length &#x3e; 2) {
+			} else if(arguments.length &gt; 2) {
 				resolver.resolve(slice.call(arguments, 1));
 			} else {
 				resolver.resolve(value);
@@ -10029,7 +10022,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	 *		}
 	 *	}
 	 *
-	 *	var when = require(&#x27;when&#x27;), nodefn = require(&#x27;when/node/function&#x27;);
+	 *	var when = require('when'), nodefn = require('when/node/function');
 	 *
 	 *	var deferred = when.defer();
 	 *	callbackTakingFunction(nodefn.<span class="apidocCodeKeywordSpan">createCallback</span>(deferred.resolver));
@@ -10038,7 +10031,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	 *		// Use interestingValue
 	 *	});
 	 *
-	 * @param {Resolver} resolver that will be &#x27;attached&#x27; to the callback
+	 * @param {Resolver} resolver that will be 'attached' to the callback
 	 * @returns {Function} a node-style callback function
 ...</pre></li>
     </ul>
@@ -10053,17 +10046,17 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function lift(f) {
-		var args1 = arguments.length &#x3e; 1 ? slice.call(arguments, 1) : [];
+		var args1 = arguments.length &gt; 1 ? slice.call(arguments, 1) : [];
 		return function() {
 			// TODO: Simplify once partialing has been removed
 			var l = args1.length;
 			var al = arguments.length;
 			var args = new Array(al + l);
 			var i;
-			for(i=0; i&#x3c;l; ++i) {
+			for(i=0; i&lt;l; ++i) {
 				args[i] = args1[i];
 			}
-			for(i=0; i&#x3c;al; ++i) {
+			for(i=0; i&lt;al; ++i) {
 				args[i+l] = arguments[i];
 			}
 			return _apply(f, this, args);
@@ -10078,10 +10071,10 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	 *	}
 	 *
 	 *    var promiseAjax = callbacks.<span class="apidocCodeKeywordSpan">lift</span>(traditionalAjax);
-	 *    promiseAjax(&#x22;GET&#x22;, &#x22;/movies.json&#x22;).then(console.log, console.error);
+	 *    promiseAjax("GET", "/movies.json").then(console.log, console.error);
 	 *
-	 *    var promiseAjaxGet = callbacks.lift(traditionalAjax, &#x22;GET&#x22;);
-	 *    promiseAjaxGet(&#x22;/movies.json&#x22;).then(console.log, console.error);
+	 *    var promiseAjaxGet = callbacks.lift(traditionalAjax, "GET");
+	 *    promiseAjaxGet("/movies.json").then(console.log, console.error);
 	 *
 	 * @param {Function} f traditional async function to be decorated
 	 * @param {...*} [args] arguments to be prepended for the new function @deprecated
@@ -10201,7 +10194,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 
 		verifier = verifier || function () { return false; };
 
-		if (typeof interval !== &#x27;function&#x27;) {
+		if (typeof interval !== 'function') {
 			interval = (function (interval) {
 				return function () { return when().delay(interval); };
 			})(interval);
@@ -10275,7 +10268,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 
 		return function enter() {
 			return when.<span class="apidocCodeKeywordSpan">promise</span>(function(resolve) {
-				if(count &#x3c; allowed) {
+				if(count &lt; allowed) {
 					resolve(exit);
 				} else {
 					waiting.push(resolve);
@@ -10300,7 +10293,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">race = function () {
-			for(var i=0, l=arguments.length, a=new Array(l); i&#x3c;l; ++i) {
+			for(var i=0, l=arguments.length, a=new Array(l); i&lt;l; ++i) {
 				a[i] = arguments[i];
 			}
 			return apply(f, this, a);
@@ -10323,20 +10316,20 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">reduce = function () {
-			for(var i=0, l=arguments.length, a=new Array(l); i&#x3c;l; ++i) {
+			for(var i=0, l=arguments.length, a=new Array(l); i&lt;l; ++i) {
 				a[i] = arguments[i];
 			}
 			return apply(f, this, a);
 		}</pre></li>
     <li>example usage<pre class="apidocCodePre">...
 
-The second example shows off the power that comes with when&#x27;s promise logic. Here, we get an array of numbers from a remote
+The second example shows off the power that comes with when's promise logic. Here, we get an array of numbers from a remote
  source and reduce them. The example will print `150` if all went well, and if there was a problem will print a full stack trace
 .
 
 ```js
-var when = require(&#x27;when&#x27;);
-var rest = require(&#x27;rest&#x27;);
+var when = require('when');
+var rest = require('rest');
 
 when.<span class="apidocCodeKeywordSpan">reduce</span>(when.map(getRemoteNumberList(), times10), sum)
 .done(function(result) {
@@ -10345,7 +10338,7 @@ when.<span class="apidocCodeKeywordSpan">reduce</span>(when.map(getRemoteNumberL
 
 function getRemoteNumberList() {
 // Get a remote array [1, 2, 3, 4, 5]
-return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
+return rest('http://example.com/numbers').then(JSON.parse);
 ...</pre></li>
     </ul>
 
@@ -10364,7 +10357,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">reduceRight = function () {
-			for(var i=0, l=arguments.length, a=new Array(l); i&#x3c;l; ++i) {
+			for(var i=0, l=arguments.length, a=new Array(l); i&lt;l; ++i) {
 				a[i] = arguments[i];
 			}
 			return apply(f, this, a);
@@ -10451,7 +10444,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 	 */
 	function when(x, onFulfilled, onRejected, onProgress) {
 		var p = Promise.<span class="apidocCodeKeywordSpan">resolve</span>(x);
-		if (arguments.length &#x3c; 2) {
+		if (arguments.length &lt; 2) {
 			return p;
 		}
 
@@ -10542,7 +10535,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">some = function () {
-			for(var i=0, l=arguments.length, a=new Array(l); i&#x3c;l; ++i) {
+			for(var i=0, l=arguments.length, a=new Array(l); i&lt;l; ++i) {
 				a[i] = arguments[i];
 			}
 			return apply(f, this, a);
@@ -10565,7 +10558,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function toFulfilledState(x) {
-		return { state: &#x27;fulfilled&#x27;, value: x };
+		return { state: 'fulfilled', value: x };
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -10582,7 +10575,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     <li>description and source-code<pre class="apidocCodePre">function inspect(handler) {
 		var state = handler.state();
 		return state === 0 ? toPendingState()
-			 : state &#x3e; 0   ? toFulfilledState(handler.value)
+			 : state &gt; 0   ? toFulfilledState(handler.value)
 			               : toRejectedState(handler.value);
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
@@ -10598,7 +10591,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function toPendingState() {
-		return { state: &#x27;pending&#x27; };
+		return { state: 'pending' };
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -10613,7 +10606,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function toRejectedState(e) {
-		return { state: &#x27;rejected&#x27;, reason: e };
+		return { state: 'rejected', reason: e };
 	}</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
@@ -10640,7 +10633,7 @@ return rest(&#x27;http://example.com/numbers&#x27;).then(JSON.parse);
 (function(define) {
 define(function(require) {
 
-	var when = require(&#x27;./when&#x27;);
+	var when = require('./when');
 
     /**
 	 * @deprecated Use when(trigger).<span class="apidocCodeKeywordSpan">timeout</span>(ms)
@@ -10649,7 +10642,7 @@ define(function(require) {
 		return when(trigger).timeout(msec);
     };
 });
-})(typeof define === &#x27;function&#x27; &#x26;&#x26; define.amd ? define : function (factory) { module.exports = factory(require
+})(typeof define === 'function' &amp;&amp; define.amd ? define : function (factory) { module.exports = factory(require
 ); });
 ...</pre></li>
     </ul>
@@ -10688,7 +10681,7 @@ define(function(require) {
     <ul>
     <li>description and source-code<pre class="apidocCodePre">function attempt(f) {
 		<span class="apidocCodeCommentSpan">/*jshint validthis:true */
-</span>		for(var i=0, l=arguments.length-1, a=new Array(l); i&#x3c;l; ++i) {
+</span>		for(var i=0, l=arguments.length-1, a=new Array(l); i&lt;l; ++i) {
 			a[i] = arguments[i+1];
 		}
 		return apply(f, this, a);
@@ -10735,3 +10728,4 @@ define(function(require) {
     ]
 </div>
 </div>
+</body></html>
