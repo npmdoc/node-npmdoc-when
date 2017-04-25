@@ -1,4 +1,7 @@
-# api documentation for  [when (v3.7.8)](http://cujojs.com)  [![npm package](https://img.shields.io/npm/v/npmdoc-when.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-when) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-when.svg)](https://travis-ci.org/npmdoc/node-npmdoc-when)
+# npmdoc-when
+
+#### basic api documentation for  [when (v3.7.8)](http://cujojs.com)  [![npm package](https://img.shields.io/npm/v/npmdoc-when.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-when) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-when.svg)](https://travis-ci.org/npmdoc/node-npmdoc-when)
+
 #### A lightweight Promises/A+ and when() implementation, plus other async goodies.
 
 [![NPM](https://nodei.co/npm/when.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/when)
@@ -121,7 +124,8 @@
         "uglify-es6": "uglifyjs es6-shim/Promise.js --compress --mangle  --in-source-map es6-shim/Promise.js.map --source-map es6-shim/Promise.min.js.map -o es6-shim/Promise.min.js",
         "uglify-when": "uglifyjs dist/browser/when.js --compress --mangle  --in-source-map dist/browser/when.js.map --source-map dist/browser/when.min.js.map -o dist/browser/when.min.js"
     },
-    "version": "3.7.8"
+    "version": "3.7.8",
+    "bin": {}
 }
 ```
 
